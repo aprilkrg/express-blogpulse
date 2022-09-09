@@ -32,7 +32,7 @@ router.get('/new', (req, res) => {
 router.get('/:id', (req, res) => {
   db.article.findOne({
     where: { id: req.params.id },
-    include: [db.author]
+    include: [db.author, db.comment]
   })
   .then((article) => {
     if (!article) throw Error()
@@ -43,6 +43,26 @@ router.get('/:id', (req, res) => {
     console.log(error)
     res.status(400).render('main/404')
   })
+})
+
+// POST :3000/articles/:id/comments - route to save comment to db
+router.post("/:id/comments", async (req, res) => {
+  try {
+    // get the data from req.body
+    console.log("req dot body", req.body)
+    // create a new comment from data ^
+    // console that new comment
+    // re render the page so user can see comment
+    const newComment = await db.comment.create({
+      name: req.body.name,
+      content: req.body.content,
+      articleId: req.params.id
+    })
+    // 3000/articles/1
+    res.redirect(`/articles/${req.params.id}`)
+  } catch(err) {
+    console.log(err)
+  }
 })
 
 module.exports = router

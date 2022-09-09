@@ -8,4 +8,19 @@
 
 <hr />
 
+<% if(article.comments){ %>
+  <% article.comments.forEach(comment => { %>
+    <p><%= comment.content %></p>
+    <p>- <%= comment.name %></p>
+  <% }) %>
+<% } %>
+
+<form method="POST" action="/articles/<%= article.id %>/comments">
+  <label for="name">Your name:</label>
+  <input type="text" name="name">
+  <label for="content">Write your comment here:</label>
+  <input type="text" name="content">
+  <input type="submit">
+</form>
+
 <a href="/">&larr; Back Home</a>
